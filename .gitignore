@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+*.pem
+.env*.local
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# test/QA artifacts
+.playwright-mcp/
+.omc/
+desktop-*.png
+daangn-*.png
+hero-*.png
+community-*.png
+instructor-photo.png
+instructor-cred-pm.png
+instructor-pm-final.png
+image.png
