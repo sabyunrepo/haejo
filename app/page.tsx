@@ -425,7 +425,7 @@ export default function Page() {
           />
 
           <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-stretch">
-            <div className="card-soft rounded-[28px] p-7 sm:p-10 flex flex-col">
+            <div className="card-soft rounded-[28px] p-7 sm:p-10 flex flex-col order-2 lg:order-1">
               <Quote className="h-8 w-8 text-orange" />
               <p className="h-display text-[22px] sm:text-[28px] leading-[1.35] mt-4 text-balance">
                 비개발자도 AI 한 번 통과시켜 보면, 다음 아이디어는 혼자 갈 수 있어요.
@@ -445,7 +445,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="ph-block relative aspect-[4/5] lg:aspect-auto rounded-[28px] overflow-hidden text-white">
+            <div className="ph-block relative aspect-[4/5] lg:aspect-auto rounded-[28px] overflow-hidden text-white order-1 lg:order-2 min-h-[420px] lg:min-h-0">
               {/* photo */}
               <img
                 src="/instructor.png"
