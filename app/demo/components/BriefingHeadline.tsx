@@ -1,8 +1,8 @@
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import type { BriefingSummary } from '@/lib/demo/ai/gemini';
+import type { MarketOverview } from '@/lib/demo/ai/gemini';
 
 const SENTIMENT_META: Record<
-  BriefingSummary['sentiment'],
+  MarketOverview['sentiment'],
   { label: string; cls: string; Icon: typeof TrendingUp }
 > = {
   positive: { label: '호조', cls: 'text-pos', Icon: TrendingUp },
@@ -17,7 +17,7 @@ export function BriefingHeadline({
   generatedAt,
 }: {
   headline: string;
-  sentiment: BriefingSummary['sentiment'];
+  sentiment: MarketOverview['sentiment'];
   summaryMd: string;
   generatedAt: string;
 }) {

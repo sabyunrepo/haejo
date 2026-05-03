@@ -5,7 +5,7 @@ import type { BriefingSummary } from '@/lib/demo/ai/gemini';
 
 export type BriefingPayload = {
   stocks: StockSnapshot[];
-  newsByKeyword: Record<string, NewsItem[]>;
+  newsByTicker: Record<string, NewsItem[]>;
   summary: BriefingSummary;
 };
 

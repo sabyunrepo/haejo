@@ -1,8 +1,12 @@
-import { Newspaper } from 'lucide-react';
+import { LineChart } from 'lucide-react';
 import { readPublicBriefing } from './lib/briefing';
 import { MarketQuickView } from './components/MarketQuickView';
 import { BriefingHeadline } from './components/BriefingHeadline';
-import { KeywordTabs } from './components/KeywordTabs';
+import {
+  StockBriefingGrid,
+  type BriefingItem,
+} from './components/StockBriefingGrid';
+import { Disclaimer } from './components/Disclaimer';
 
 export const revalidate = 60;
 
@@ -14,23 +18,34 @@ export default async function DemoPage() {
   }
 
   const { payload, generatedAt } = briefing;
+  const { market_overview, stock_briefings } = payload.summary;
+
+  // 종목별 데이터 통합 (시세 + 뉴스 + 분석)
+  const items: BriefingItem[] = stock_briefings
+    .map((analysis) => {
+      const stock = payload.stocks.find((s) => s.ticker === analysis.ticker);
+      const news = payload.newsByTicker[analysis.ticker] ?? [];
+      return stock ? { stock, news, analysis } : null;
+    })
+    .filter((x): x is BriefingItem => x !== null);
 
   return (
     <div className="flex flex-col gap-8">
       <MarketQuickView stocks={payload.stocks} />
       <BriefingHeadline
-        headline={payload.summary.headline}
-        sentiment={payload.summary.sentiment}
-        summaryMd={payload.summary.summary_md}
+        headline={market_overview.headline}
+        sentiment={market_overview.sentiment}
+        summaryMd={market_overview.summary_md}
         generatedAt={generatedAt}
       />
       <section>
         <h2 className="h-card text-xl sm:text-2xl mb-4 flex items-center gap-2">
-          <Newspaper className="w-5 h-5" />
-          키워드별 핵심 뉴스
+          <LineChart className="w-5 h-5" />
+          종목별 AI 분석
         </h2>
-        <KeywordTabs newsByKeyword={payload.newsByKeyword} />
+        <StockBriefingGrid items={items} />
       </section>
+      <Disclaimer />
     </div>
   );
 }

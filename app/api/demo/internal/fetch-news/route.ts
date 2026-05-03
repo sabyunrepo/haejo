@@ -14,7 +14,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 10;
 export const dynamic = 'force-dynamic';
 
-type KeywordResult = { kw: string; items: NewsItem[] };
+type TickerNewsResult = { ticker: string; items: NewsItem[] };
 
 export async function POST(req: Request) {
   const auth = verifyCronSecret(req);
@@ -31,24 +31,24 @@ export async function POST(req: Request) {
     const expiresAt = ttl(DEMO_CONFIG.NEWS_SUMMARY_TTL_HOURS * 60).toISOString();
 
     const settled = await Promise.allSettled(
-      DEMO_CONFIG.KEYWORDS.map((kw) =>
+      DEMO_CONFIG.TICKERS.map((t) =>
         withTimeout(
-          fetchNewsByKeyword(kw),
+          fetchNewsByKeyword(t.searchQuery),
           DEMO_CONFIG.STEP_TIMEOUT_MS,
-          `gnews:${kw}`,
-        ).then<KeywordResult>((items) => ({ kw, items })),
+          `gnews:${t.ticker}`,
+        ).then<TickerNewsResult>((items) => ({ ticker: t.ticker, items })),
       ),
     );
 
     const fulfilled = settled
       .filter(
-        (r): r is PromiseFulfilledResult<KeywordResult> =>
+        (r): r is PromiseFulfilledResult<TickerNewsResult> =>
           r.status === 'fulfilled',
       )
       .map((r) => r.value);
 
     const rows = fulfilled.map((r) => ({
-      keyword: r.kw,
+      keyword: r.ticker,
       date,
       locale: 'ko-KR',
       payload: { items: r.items },
@@ -63,10 +63,10 @@ export async function POST(req: Request) {
       inserted = rows.length;
     }
 
-    if (fulfilled.length < DEMO_CONFIG.KEYWORDS.length) {
+    if (fulfilled.length < DEMO_CONFIG.TICKERS.length) {
       status = 'error';
-      const missed = DEMO_CONFIG.KEYWORDS.length - fulfilled.length;
-      errorMsg = `NWS-WARN-EXT-011: ${missed} keyword(s) failed`;
+      const missed = DEMO_CONFIG.TICKERS.length - fulfilled.length;
+      errorMsg = `NWS-WARN-EXT-011: ${missed} ticker(s) failed`;
     }
   } catch (e) {
     status = 'error';
@@ -84,9 +84,7 @@ export async function POST(req: Request) {
     fetch(getInternalUrl('/api/demo/internal/summarize'), {
       method: 'POST',
       headers: getInternalAuthHeader(),
-    }).catch(() => {
-      /* best-effort */
-    }),
+    }).catch(() => {}),
   );
 
   return Response.json({ ok: status === 'ok', inserted, error: errorMsg });

@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   const date = todayKstDate();
   const startedAt = Date.now();
 
-  // 1. 두 fetcher가 모두 끝났는지 확인
+  // 1. stocks/news 모두 있는지 확인
   const nowIso = new Date().toISOString();
   const [stocksRes, newsRes] = await Promise.all([
     supabase
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
   if (
     freshStocks.length < DEMO_CONFIG.TICKERS.length ||
-    newsRows.length < DEMO_CONFIG.KEYWORDS.length
+    newsRows.length < DEMO_CONFIG.TICKERS.length
   ) {
     return Response.json({
       skipped: 'incomplete',
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // 2. stale lock(만료된 'processing'/'failed' row) 자동 정리
+  // 2. stale lock 자동 정리
   await supabase
     .from('briefing_cache')
     .delete()
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     .eq('locale', 'ko-KR')
     .lt('expires_at', new Date().toISOString());
 
-  // 3. briefing_cache 잠금: partial INSERT, conflict 시 다른 호출이 처리 중
+  // 3. 잠금: partial INSERT
   const expiresAt = ttl(DEMO_CONFIG.BRIEFING_CACHE_TTL_HOURS * 60).toISOString();
   const claim = await supabase.from('briefing_cache').insert({
     date,
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
     return new Response('Internal Error', { status: 500 });
   }
 
-  // 3. Gemini 요약
+  // 4. Gemini 요약
   let status: 'ok' | 'error' = 'ok';
   let errorMsg: string | null = null;
 
@@ -95,14 +95,14 @@ export async function POST(req: Request) {
       currency: q.currency,
     }));
 
-    const newsByKeyword: Record<string, NewsItem[]> = {};
+    const newsByTicker: Record<string, NewsItem[]> = {};
     for (const row of newsRows) {
       const items = (row.payload as { items?: NewsItem[] })?.items ?? [];
-      newsByKeyword[row.keyword] = items;
+      newsByTicker[row.keyword] = items;
     }
 
     const summary = await withTimeout(
-      summarizeBriefing({ stocks, newsByKeyword }),
+      summarizeBriefing({ stocks, newsByTicker }),
       DEMO_CONFIG.GEMINI_TIMEOUT_MS,
       'gemini',
     );
@@ -110,7 +110,7 @@ export async function POST(req: Request) {
     await supabase
       .from('briefing_cache')
       .update({
-        payload: { stocks, newsByKeyword, summary },
+        payload: { stocks, newsByTicker, summary },
         generated_at: new Date().toISOString(),
         expires_at: expiresAt,
       })
@@ -119,7 +119,6 @@ export async function POST(req: Request) {
   } catch (e) {
     status = 'error';
     errorMsg = `AI-ERR-EXT-012: ${e instanceof Error ? e.message : String(e)}`;
-    // 잠금 5분으로 단축 → 다음 호출이 재시도 가능
     const retryExpires = new Date(Date.now() + 5 * 60 * 1000).toISOString();
     await supabase
       .from('briefing_cache')
