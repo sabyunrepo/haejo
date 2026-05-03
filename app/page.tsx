@@ -43,8 +43,19 @@ import {
   PartyPopper,
 } from "lucide-react";
 import Link from "next/link";
+import { getNextBootcampWeekend } from "@/lib/landing-dates";
+
+// 1시간마다 ISR 재생성 — KST 자정 넘어가면 다음 토일로 자동 갱신
+export const revalidate = 3600;
 
 export default function Page() {
+  const { saturday, sunday } = getNextBootcampWeekend();
+  const dateRange = `${saturday.month}월 ${saturday.day}일(토) · ${sunday.day}일(일)`;
+  const dateShort = `${saturday.month}월 ${saturday.day}일 · ${sunday.day}일`;
+  const dateSlash = `${saturday.month}/${saturday.day} 토 · ${sunday.month}/${sunday.day} 일`;
+  const day1Date = `${saturday.month}/${saturday.day} (토)`;
+  const day2Date = `${sunday.month}/${sunday.day} (일)`;
+  const datePunch = `${saturday.month}월 ${saturday.day} · ${sunday.day}일`;
   return (
     <main className="overflow-x-hidden bg-bg">
       {/* ────────  announcement  ──────── */}
@@ -52,7 +63,7 @@ export default function Page() {
         <div className="mx-auto max-w-[1180px] px-5 sm:px-8 py-2.5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[12.5px] sm:text-[13px] font-medium">
           <span className="inline-flex items-center gap-1.5">
             <CalendarDays className="h-3.5 w-3.5 text-orange-soft" />
-            <span>5월 2일(토) · 3일(일) · 14:00–17:00</span>
+            <span>{dateRange} · 14:00–17:00</span>
           </span>
           <span className="hidden sm:inline text-fg-3">·</span>
           <span className="inline-flex items-center gap-1.5">
@@ -154,10 +165,10 @@ export default function Page() {
             <div className="relative card-soft p-7 sm:p-8 rounded-[28px]">
               <span className="tag-pill mb-5">
                 <PartyPopper className="h-3.5 w-3.5" />
-                5월 2일 · 3일 모집 중
+                {dateShort} 모집 중
               </span>
               <div className="grid grid-cols-2 gap-3.5">
-                <HeroCell icon={<CalendarDays />} k="DATE" v="5/2 토 · 5/3 일" sub="2일 완성 부트캠프" />
+                <HeroCell icon={<CalendarDays />} k="DATE" v={dateSlash} sub="2일 완성 부트캠프" />
                 <HeroCell icon={<Clock />} k="TIME" v="14:00 — 17:00" sub="각 차시 60분" />
                 <HeroCell icon={<MapPin />} k="PLACE" v="서울대입구역" sub="오프라인 모임" />
                 <HeroCell icon={<Wallet />} k="PRICE" v="30,000원" sub="공간비 + 책임비" tone="orange" />
@@ -399,7 +410,7 @@ export default function Page() {
             <div className="flex items-center gap-3 mb-7">
               <span className="tag-pill">
                 <Calendar className="h-3.5 w-3.5" />
-                DAY 01 · 5/2 (토) 14:00
+                DAY 01 · {day1Date} 14:00
               </span>
             </div>
             <h3 className="h-display text-[26px] sm:text-[34px] lg:text-[40px]">
@@ -436,7 +447,7 @@ export default function Page() {
             <div className="flex items-center gap-3 mb-7">
               <span className="tag-pill green">
                 <Calendar className="h-3.5 w-3.5" />
-                DAY 02 · 5/3 (일) 14:00
+                DAY 02 · {day2Date} 14:00
               </span>
             </div>
             <h3 className="h-display text-[26px] sm:text-[34px] lg:text-[40px]">
@@ -689,11 +700,11 @@ export default function Page() {
       {/* ────────  bottom CTA  ──────── */}
       <section className="bg-bg py-24 sm:py-28 border-t border-line">
         <div className="mx-auto max-w-[1180px] px-5 sm:px-8 text-center">
-          <span className="tag-pill mx-auto"><Sparkles className="h-3.5 w-3.5" />5월 2일 · 3일 · 단 5명</span>
+          <span className="tag-pill mx-auto"><Sparkles className="h-3.5 w-3.5" />{dateShort} · 단 5명</span>
           <h2 className="h-display-tight mt-5 text-[36px] sm:text-[48px] lg:text-[60px] text-balance">
             아이디어를 머릿속에만
             <br />
-            두지 마세요. <span className="text-orange">5월 2 · 3일, 띄웁니다.</span>
+            두지 마세요. <span className="text-orange">{datePunch}, 띄웁니다.</span>
           </h2>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <a href="#join" className="btn-orange group">
