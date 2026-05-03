@@ -42,6 +42,7 @@ import {
   CircleCheckBig,
   PartyPopper,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -80,6 +81,10 @@ export default function Page() {
           </a>
           <div className="hidden md:flex items-center gap-7 text-[14.5px]">
             <a href="#build" className="nav-link">만들 것</a>
+            <Link href="/demo" className="nav-link inline-flex items-center gap-1">
+              결과물 미리 보기
+              <ArrowUpRight className="h-3 w-3 text-orange" />
+            </Link>
             <a href="#curriculum" className="nav-link">커리큘럼</a>
             <a href="#instructor" className="nav-link">강사</a>
             <a href="#community" className="nav-link">커뮤니티</a>
@@ -268,6 +273,81 @@ export default function Page() {
               {ideaRows.map((row) => (
                 <IdeaRow key={row.idx} {...row} />
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ────────  demo entry — links to /demo  ──────── */}
+      <section id="demo" className="bg-cream py-24 sm:py-32">
+        <div className="mx-auto max-w-[1180px] px-5 sm:px-8">
+          <div className="reveal inline-flex items-center gap-2.5 mb-6">
+            <span className="tag-pill">
+              <Sparkles className="h-3.5 w-3.5" />
+              LIVE DEMO · 결과물 미리 보기
+            </span>
+          </div>
+          <h2 className="h-display text-[40px] sm:text-[52px] tracking-[-0.045em] mb-3 leading-[1.05]">
+            강의에서 만든 것을
+            <br />
+            <span className="text-orange">지금 바로 써보세요.</span>
+          </h2>
+          <p className="font-mono text-[13px] text-fg-3 mb-12">
+            Built with this Course
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-6 sm:gap-8 items-stretch">
+            {/* 좌: dark mini preview (정적 stub) */}
+            <div className="card-data p-6 sm:p-8 flex flex-col justify-between gap-6">
+              <div>
+                <div className="text-[11px] font-mono text-muted-2 uppercase tracking-wider mb-4">
+                  오늘의 마켓 (예시)
+                </div>
+                <div className="grid grid-cols-3 gap-3 sm:gap-5">
+                  {[
+                    { label: "KOSPI", price: "2,567", delta: "+0.8%", up: true },
+                    { label: "AAPL",  price: "192.4", delta: "+1.2%", up: true },
+                    { label: "BTC",   price: "64,210", delta: "-0.4%", up: false },
+                  ].map((s) => (
+                    <div key={s.label} className="flex flex-col gap-1">
+                      <div className="font-mono text-[11px] text-muted-2">{s.label}</div>
+                      <div className="font-mono text-base sm:text-lg text-white">{s.price}</div>
+                      <div className={`font-mono text-xs ${s.up ? "text-pos" : "text-neg"}`}>
+                        {s.delta}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-white/10 pt-4">
+                <p className="text-[14px] leading-snug text-muted-2">
+                  &ldquo;오늘은 반도체 호재가 시장을 끌어올린 하루입니다.&rdquo;
+                </p>
+                <div className="font-mono text-[11px] text-muted-2/60 mt-2">
+                  — AI 요약 · 매일 07:00 KST 자동 갱신
+                </div>
+              </div>
+            </div>
+
+            {/* 우: 설명 + CTA */}
+            <div className="card-soft p-6 sm:p-8 flex flex-col gap-6">
+              <div>
+                <div className="h-card text-[22px] mb-2">AI-Market-Curator</div>
+                <p className="text-fg-2 text-[15px] leading-relaxed">
+                  매일 아침 7시, 관심 종목과 키워드 뉴스를 AI가 3줄로 요약해 드려요.
+                  <br className="hidden sm:inline" />
+                  <span className="text-fg-3">강의 2일 차에 함께 만드는 결과물입니다.</span>
+                </p>
+              </div>
+              <div className="border-t border-line pt-5 mt-auto flex flex-col sm:flex-row gap-3">
+                <Link href="/demo" className="btn-orange flex-1 justify-center group">
+                  데모 열기
+                  <ArrowUpRight className="arr-chev h-4 w-4" />
+                </Link>
+                <a href="#curriculum" className="btn-ghost-light flex-1 justify-center">
+                  어떻게 만들었지?
+                </a>
+              </div>
             </div>
           </div>
         </div>
