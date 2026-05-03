@@ -5,9 +5,14 @@ build/
 .DS_Store
 *.pem
 .env*.local
+.env*.bak.*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude Code / Superpowers local state
+.claude/
+skills-lock.json
 
 # test/QA artifacts
 .playwright-mcp/
