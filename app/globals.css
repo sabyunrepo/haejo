@@ -247,6 +247,26 @@
       radial-gradient(circle at 82% 18%, rgba(255, 179, 122, 0.35), transparent 55%),
       linear-gradient(135deg, #1b1d1f 0%, #2a2d31 100%);
   }
+
+  /* ----------  /demo route — terminal-ish dark card  ---------- */
+  .card-data {
+    background: var(--color-fg);
+    color: #fff;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+  }
+  .text-pos { color: var(--color-green); }
+  .text-neg { color: #d94343; }
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-line-2) 0%, var(--color-line) 50%, var(--color-line-2) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    border-radius: 8px;
+  }
+  @keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 }
 
 /* ----------  reveal animation  ---------- */
