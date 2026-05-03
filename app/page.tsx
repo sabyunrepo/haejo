@@ -156,7 +156,7 @@ export default function Page() {
             <div className="reveal delay-4 mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13.5px] text-fg-3">
               <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-orange" /> 코드 한 줄 안 외워도 OK</span>
               <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-orange" /> 노트북 한 대만 있으면 됨</span>
-              <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-orange" /> Claude Code Pro 플랜 권장 ($20/mo)</span>
+              <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-orange" /> Claude Code Pro($20) 또는 GPT Go($4.99) 중 택1</span>
             </div>
           </div>
 
@@ -493,11 +493,11 @@ export default function Page() {
                 <span className="text-orange">표준 5종 세트.</span>
               </>
             }
-            sub="실리콘밸리 스타트업이 실제로 쓰는 조합을 가장 단순한 형태로 한 번 통과합니다. Supabase · Gemini · Vercel · GitHub은 무료 한도, Claude Code는 Pro 플랜($20/mo) 권장이에요."
+            sub="실리콘밸리 스타트업이 실제로 쓰는 조합을 가장 단순한 형태로 한 번 통과합니다. Supabase · Gemini · Vercel · GitHub은 무료 한도, AI 코딩 도구는 Claude Code Pro($20/mo) 또는 GPT Go($4.99/mo) 중 하나면 됩니다."
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mt-12">
-            <Tool tone="orange" icon={<Cpu />}      meta="AI Coding"          name="Claude Code" desc="옆에 앉은 신입 개발자. 한국어로 시키면 코드를 만들어 줍니다. (실습 원활을 위해 Pro 플랜 권장)" />
+            <Tool tone="orange" icon={<Cpu />}      meta="AI Coding"          name="Claude Code · GPT" desc="옆에 앉은 신입 개발자. 한국어로 시키면 코드를 만들어 줍니다. (Claude Code Pro $20 또는 GPT Go $4.99 중 하나 권장)" />
             <Tool tone="peach"  icon={<Code2 />}    meta="Web Framework"      name="Next.js"     desc="웹사이트의 표준 골격. 조립식 주택 키트로 비유합니다." />
             <Tool tone="green"  icon={<Database />} meta="Database · Auth"    name="Supabase"    desc="무료 자동 창고 + 경비실. 회원가입과 데이터 저장이 한 번에." />
             <Tool tone="orange" icon={<Sparkles />} meta="AI Model"           name="Gemini API"  desc="외부에서 도와주는 AI. 한국어 잘하고 무료 티어가 넉넉합니다." />
@@ -685,8 +685,8 @@ export default function Page() {
                  a="네. 모든 코드는 Claude Code가 만들어 줍니다. 강의에서는 ‘원하는 것을 한국어로 잘 설명하는 법’과 ‘에러 메시지를 복사해서 붙여 넣는 법’이 핵심입니다. 컴퓨터로 폴더 만들기 · 파일 열기 정도면 충분해요." />
             <Faq q="Mac · Windows 둘 다 가능한가요?"
                  a="둘 다 가능합니다. 강의 자료는 Windows 기준으로 화면과 명령어가 정리되어 있지만, Mac 단축키·터미널 명령어가 워크북에 함께 들어 있어요. 어느 OS든 그대로 따라오시면 됩니다." />
-            <Faq q="3만 원 외에 추가 비용이 있나요? Claude Code Pro 플랜은 꼭 필요한가요?"
-                 a="3만 원은 공간 대여비와 노쇼 방지용 책임비입니다. 강의에서 쓰는 Supabase · Gemini · Vercel · GitHub은 모두 개인 학습용 무료 한도 안에서 진행돼요. 다만 Claude Code는 Pro 플랜(월 $20)을 권장드립니다. 무료 버전은 사용량 한도가 빠듯해서 6차시 실습을 끝까지 돌리기 어렵습니다. 부트캠프 기간 한 달만 결제해 보시는 걸 추천드려요." />
+            <Faq q="3만 원 외에 추가 비용이 있나요? AI 코딩 도구 유료 플랜은 꼭 필요한가요?"
+                 a="3만 원은 공간 대여비와 노쇼 방지용 책임비입니다. 강의에서 쓰는 Supabase · Gemini · Vercel · GitHub은 모두 개인 학습용 무료 한도 안에서 진행돼요. AI 코딩 도구는 Claude Code Pro(월 $20) 또는 GPT Go(월 $4.99) 중 하나를 권장드립니다. 둘 다 무료 버전은 사용량 한도가 빠듯해서 6차시 실습을 끝까지 돌리기 어렵습니다. 부트캠프 기간 한 달만 결제해 보시는 걸 추천드려요." />
             <Faq q="준비물이 따로 있나요?"
                  a="Mac 또는 Windows 10/11 노트북(RAM 8GB+, 저장공간 5GB+), 안정적인 인터넷, Gmail 계정 정도면 됩니다. GitHub 계정만 미리 만들어 두면 Supabase · Vercel · Anthropic 가입이 한 번에 끝나서 시간이 단축돼요." />
             <Faq q="강의 중에 본인 아이디어로 바꿔서 만들어도 되나요?"
